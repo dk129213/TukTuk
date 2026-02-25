@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <!-- SEO & Open Graph (unchanged) -->
+  <title>Dubrovnik Tuk Tuk Tours | Private Panoramic Experiences</title>
+  <meta name="description" content="Exclusive eco-friendly Tuk Tuk journeys through Dubrovnik’s hidden viewpoints, Mount Srđ sunsets, and UNESCO Old Town. Private, cinematic, and utterly luxurious.">
+  <meta property="og:title" content="Dubrovnik Tuk Tuk Tours – Luxury Private Experiences">
+  <meta property="og:description" content="Explore Dubrovnik like never before. Private panoramic tours, golden sunsets, and local storytelling with Mediterranean elegance.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://images.unsplash.com/photo-1590075897396-6b1c5d4e1e4a?w=1200">
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- Premium typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <!-- EmailJS Library -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <style>
+    /* ---------- RESET & GLOBAL ---------- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ---------- PERSONAL PALETTE – centered on #7A8444 ---------- */
+    :root {
+      --olive: #7A8444;               /* signature green */
+      --olive-light: #e3e8d3;          /* soft background tint */
+      --olive-dark: #5a6432;            /* deeper for hover */
+      --cream: #fdfaf3;                 /* main background – warm white */
+      --sand: #f5efe3;                  /* secondary background */
+      --clay: #c17b5e;                   /* warm terracotta accent */
+      --charcoal: #2e2b26;               /* text primary */
+      --warm-gray: #5e5b55;               /* text secondary */
+      --border-warm: rgba(122, 132, 68, 0.25);
+      --shadow-soft: 0 20px 35px -12px rgba(90, 80, 60, 0.12);
+      --shadow-hover: 0 30px 50px -16px rgba(122, 132, 68, 0.25);
+      --card-bg: #ffffff;
+      --nav-bg: rgba(253, 250, 243, 0.8);
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      background-color: var(--cream);
+      color: var(--charcoal);
+    }
+
+    /* ---------- CUSTOM SCROLLBAR ---------- */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: var(--sand); }
+    ::-webkit-scrollbar-thumb { background: var(--olive); border-radius: 4px; }
+
+    /* ---------- GRAIN – subtle texture ---------- */
+    .grain {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 200;
+      opacity: 0.02;
+      background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJmIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iLjc0IiBudW1PY3RhdmVzPSIzIiAvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbHRlcj0idXJsKCNmKSIgb3BhY2l0eT0iMC4xIiAvPjwvc3ZnPg==');
+      background-repeat: repeat;
+      mix-blend-mode: multiply;
+    }
+
+    /* ---------- TYPOGRAPHY ---------- */
+    h1, h2, h3, .serif {
+      font-family: 'Playfair Display', serif;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+      color: var(--charcoal);
+    }
+
+    h2 {
+      font-size: clamp(2.2rem, 6vw, 3.2rem);
+      margin-bottom: 0.75rem;
+      position: relative;
+      display: inline-block;
+    }
+    h2:after {
+      content: '';
+      display: block;
+      width: 70px;
+      height: 3px;
+      background: var(--olive);
+      margin: 0.5rem 0 0 0;
+      border-radius: 4px;
+    }
+    .container h2.text-center:after {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* ---------- NAVIGATION ---------- */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2.5rem;
+      background: var(--nav-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-warm);
+    }
+
+    .nav-logo img {
+      height: 80px;
+      width: auto;
+      display: block;
+      transition: opacity 0.2s;
+    }
+    .nav-logo img:hover { opacity: 0.85; }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 3rem;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--charcoal);
+      font-weight: 500;
+      font-size: 1rem;
+      letter-spacing: 0.5px;
+      transition: color 0.2s;
+      border-bottom: 2px solid transparent;
+      padding-bottom: 4px;
+    }
+    .nav-links a:hover {
+      color: var(--olive);
+      border-bottom-color: var(--olive);
+    }
+
+    /* ---------- HERO – clean dark overlay, no green ---------- */
+    .hero {
+      position: relative;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: white;
+      overflow: hidden;
+      background-color: #1e1e1e; /* fallback */
+    }
+
+    .hero-video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 120%;
+      object-fit: cover;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      /* Dark, neutral overlay – no green tint */
+      background: radial-gradient(circle at center, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.7) 100%);
+      z-index: 1;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 900px;
+      padding: 0 1.5rem;
+      animation: fadeUp 1.5s ease-out;
+    }
+
+    .hero h1 {
+      font-size: clamp(3rem, 10vw, 5.5rem);
+      font-weight: 700;
+      margin-bottom: 1rem;
+      text-shadow: 0 4px 30px rgba(0,0,0,0.5);
+      color: white;
+    }
+
+    .hero p {
+      font-size: clamp(1.2rem, 4vw, 1.6rem);
+      font-weight: 350;
+      margin-bottom: 2.5rem;
+      opacity: 0.95;
+      max-width: 650px;
+      margin-left: auto;
+      margin-right: auto;
+      color: rgba(255,255,255,0.9);
+      text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 1rem 2.4rem;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      border: 1.5px solid transparent;
+      display: inline-block;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+    }
+
+    .btn-primary {
+      background: var(--olive);
+      color: white;
+    }
+    .btn-primary:hover {
+      background: var(--olive-dark);
+      transform: translateY(-5px);
+      box-shadow: 0 16px 28px rgba(122, 132, 68, 0.4);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1.5px solid white;
+      color: white;
+      backdrop-filter: blur(4px);
+    }
+    .btn-outline:hover {
+      background: rgba(255,255,255,0.15);
+      transform: translateY(-5px);
+    }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      animation: bounce 2.6s infinite;
+      color: white;
+      font-size: 0.8rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      opacity: 0.8;
+    }
+    .chevron {
+      width: 26px;
+      height: 26px;
+      border-right: 2px solid white;
+      border-bottom: 2px solid white;
+      transform: rotate(45deg);
+      animation: chevronMove 2s infinite;
+    }
+
+    @keyframes fadeUp { 0% { opacity: 0; transform: translateY(30px); } 100% { opacity: 1; transform: translateY(0); } }
+    @keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); } 40% { transform: translateX(-50%) translateY(-12px); } }
+    @keyframes chevronMove { 0% { opacity: 0.3; transform: rotate(45deg) translate(-4px, -4px); } 50% { opacity: 1; transform: rotate(45deg) translate(4px, 4px); } 100% { opacity: 0.3; transform: rotate(45deg) translate(-4px, -4px); } }
+
+    /* ---------- REVEAL ANIMATION ---------- */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.9s cubic-bezier(0.2, 0.9, 0.3, 1), transform 0.9s cubic-bezier(0.2, 0.9, 0.3, 1);
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    /* ---------- ABOUT – split editorial ---------- */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      padding: 5rem 0;
+    }
+    .about-content {
+      order: 1;
+    }
+    .about-image {
+      order: 2;
+      border-radius: 30px 30px 30px 30px;
+      overflow: hidden;
+      box-shadow: var(--shadow-soft);
+      aspect-ratio: 4/5;
+      transform: rotate(1deg);
+      transition: transform 0.4s;
+    }
+    .about-image:hover { transform: rotate(0) scale(1.02); }
+    .about-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .about-content p {
+      font-size: 1.2rem;
+      color: var(--warm-gray);
+      margin-top: 1.2rem;
+      line-height: 1.8;
+      border-left: 4px solid var(--olive);
+      padding-left: 1.8rem;
+    }
+
+    /* ---------- EXPERIENCE CARDS ---------- */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2.5rem;
+      margin-top: 3rem;
+    }
+    .card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: var(--shadow-soft);
+      transition: all 0.3s;
+      border: 1px solid var(--border-warm);
+    }
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: var(--shadow-hover);
+    }
+    .card-image {
+      height: 220px;
+      overflow: hidden;
+    }
+    .card-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.8s;
+    }
+    .card:hover .card-image img { transform: scale(1.1); }
+    .card-content {
+      padding: 2rem 1.8rem 2.2rem;
+    }
+    .card h3 {
+      font-size: 1.8rem;
+      margin-bottom: 0.3rem;
+    }
+    .duration {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--clay);
+      font-weight: 600;
+      margin-bottom: 1rem;
+      display: inline-block;
+      background: rgba(193, 123, 94, 0.08);
+      padding: 0.2rem 1rem;
+      border-radius: 30px;
+    }
+
+    /* ---------- WHY CHOOSE US – icons with circular bg ---------- */
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      text-align: center;
+      margin: 4rem 0 2rem;
+    }
+    .icon-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .icon-item svg {
+      width: 44px;
+      height: 44px;
+      fill: none;
+      stroke: var(--olive);
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      margin-bottom: 1rem;
+      transition: transform 0.3s;
+      background: var(--olive-light);
+      padding: 10px;
+      border-radius: 50%;
+      width: 64px;
+      height: 64px;
+    }
+    .icon-item:hover svg { transform: scale(1.1) rotate(2deg); }
+    .icon-item p {
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: var(--charcoal);
+    }
+
+    /* ---------- GALLERY – irregular grid ---------- */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.2rem;
+      margin: 3rem 0;
+    }
+    .gallery-item {
+      border-radius: 16px;
+      overflow: hidden;
+      aspect-ratio: 1/1;
+      box-shadow: var(--shadow-soft);
+    }
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s;
+    }
+    .gallery-item:hover img { transform: scale(1.08); }
+    .gallery-item:nth-child(1) { grid-column: span 2; aspect-ratio: 2/1; }
+    .gallery-item:nth-child(3) { grid-row: span 2; aspect-ratio: 1/1.8; }
+    .gallery-item:nth-child(5) { grid-column: span 2; aspect-ratio: 2/1; }
+    .gallery-item:nth-child(6) { grid-column: span 1; }
+
+    /* ---------- INQUIRY FORM ---------- */
+    .contact-form {
+      max-width: 800px;
+      margin: 3rem auto 0;
+      padding: 3rem;
+      background: var(--card-bg);
+      border-radius: 40px;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid var(--border-warm);
+    }
+    .form-group {
+      position: relative;
+      margin-bottom: 2.5rem;
+    }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%;
+      padding: 1.2rem 1rem 0.5rem 1rem;
+      font-size: 1.1rem;
+      border: none;
+      border-bottom: 2px solid rgba(122, 132, 68, 0.2);
+      background: transparent;
+      color: var(--charcoal);
+      transition: border 0.2s;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      outline: none;
+      border-bottom-color: var(--olive);
+    }
+    .form-group label {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      font-size: 1rem;
+      color: var(--warm-gray);
+      transition: 0.2s ease;
+      pointer-events: none;
+      font-weight: 400;
+    }
+    .form-group input:focus ~ label,
+    .form-group input:not(:placeholder-shown) ~ label,
+    .form-group select:focus ~ label,
+    .form-group select:not([value=""]):valid ~ label,
+    .form-group textarea:focus ~ label,
+    .form-group textarea:not(:placeholder-shown) ~ label {
+      top: -0.4rem;
+      font-size: 0.8rem;
+      color: var(--olive);
+      background: var(--card-bg);
+      padding: 0 0.3rem;
+    }
+    .form-btn {
+      width: 100%;
+      padding: 1.2rem;
+      background: var(--olive);
+      color: white;
+      border: none;
+      border-radius: 60px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      transition: all 0.3s;
+      margin-top: 1.5rem;
+      cursor: pointer;
+    }
+    .form-btn:hover {
+      background: var(--olive-dark);
+      transform: translateY(-3px);
+      box-shadow: 0 15px 25px rgba(122, 132, 68, 0.3);
+    }
+    .form-status {
+      text-align: center;
+      margin-top: 1.5rem;
+      padding: 0.8rem;
+      border-radius: 40px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      opacity: 0;
+      transition: opacity 0.3s;
+      background: var(--olive-light);
+      color: var(--olive-dark);
+    }
+    .form-status.error {
+      background: #f6dfdf;
+      color: #b35f5f;
+    }
+    .form-status.show { opacity: 1; }
+
+    /* ---------- FOOTER ---------- */
+    footer {
+      margin-top: 6rem;
+      padding: 3rem 2rem 2rem;
+      border-top: 2px solid var(--border-warm);
+      background: var(--sand);
+    }
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .footer-logo img { height: 45px; width: auto; opacity: 0.8; }
+    .footer-info { text-align: right; }
+    .instagram-icon {
+      width: 28px;
+      height: 28px;
+      fill: var(--warm-gray);
+      transition: fill 0.2s;
+    }
+    .instagram-icon:hover { fill: var(--olive); }
+    .copyright {
+      margin-top: 3rem;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--warm-gray);
+    }
+
+    /* ---------- RESPONSIVE ---------- */
+    @media (max-width: 900px) {
+      .container { padding: 0 1.5rem; }
+      .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .about-image { order: 1; }
+      .about-content { order: 2; }
+      .icon-grid { grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+      .gallery-item:nth-child(1) { grid-column: span 1; aspect-ratio: 1/1; }
+      .gallery-item:nth-child(3) { grid-row: span 1; aspect-ratio: 1/1; }
+      .gallery-item:nth-child(5) { grid-column: span 1; aspect-ratio: 1/1; }
+      .navbar { padding: 0.8rem 1.5rem; }
+      .nav-logo img { height: 60px; }
+      .nav-links { gap: 1.8rem; }
+    }
+    @media (max-width: 550px) {
+      .navbar { flex-direction: column; gap: 0.3rem; }
+      .gallery-grid { grid-template-columns: 1fr; }
+      .gallery-item:nth-child(1), .gallery-item:nth-child(3), .gallery-item:nth-child(5) { grid-column: span 1; aspect-ratio: 1/1; }
+      .contact-form { padding: 2rem; }
+    }
+
+    select option { color: var(--charcoal); background: var(--cream); }
+  </style>
+</head>
+<body>
+  <div class="grain"></div>
+
+  <!-- ============ NAVBAR ============ -->
+  <nav class="navbar">
+    <div class="nav-logo">
+      <img src="logo.png" alt="Dubrovnik Tuk Tuk Tours" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+      <span style="display:none; font-size:1.8rem; font-weight:700; color:var(--olive);">DTT</span>
+    </div>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#experiences">Experiences</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#contact">Inquire</a>
+    </div>
+  </nav>
+
+  <main>
+    <!-- ============ HERO – no green overlay ============ -->
+    <section class="hero">
+      <video class="hero-video" id="parallaxBg" autoplay muted loop playsinline poster="https://images.unsplash.com/photo-1590075897396-6b1c5d4e1e4a?w=1200">
+        <source src="wall1.mp4" type="video/mp4">
+      </video>
+      <div class="hero-overlay"></div> <!-- now dark/neutral -->
+      <div class="hero-content">
+        <h1>Dubrovnik<br>By Tuk Tuk</h1>
+        <p>Private eco-friendly Tuk Tuk experiences with breathtaking panoramic views.</p>
+        <div class="btn-group">
+          <a href="#contact" class="btn btn-primary">Request Private Tour</a>
+          <a href="#about" class="btn btn-outline">Discover the Experience</a>
+        </div>
+      </div>
+      <div class="scroll-indicator">
+        <span>Scroll</span>
+        <div class="chevron"></div>
+      </div>
+    </section>
+
+    <!-- ============ ABOUT ============ -->
+    <section id="about" class="container fade-up">
+      <div class="about-grid">
+        <div class="about-content">
+          <h2>Beyond the city walls</h2>
+          <p>Explore the city in a fun, relaxed, and unforgettable way with our Tuk Tuk Tour. Sit back, enjoy the fresh air, and let us take you to the most beautiful viewpoints and hidden corners without the long walks. Our friendly local guide shares stories, history, and insider tips while you cruise comfortably through stunning scenery. From panoramic bridges to breathtaking hilltop views, every stop is a perfect photo opportunity. Whether you choose a daytime ride or a magical sunset tour, you’ll experience the city at your own pace. Easy, personal, and full of great vibes this is sightseeing made simple and memorable.</p>
+        </div>
+        <div class="about-image">
+          <img src="beyond.webp" alt="Mount Srđ panoramic view, Dubrovnik" loading="lazy">
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ EXPERIENCES ============ -->
+    <section id="experiences" class="container fade-up">
+      <h2 class="text-center" style="text-align:center;">Signature experiences</h2>
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-image"><img src="Citywalls.webp" alt="Dubrovnik city walls" loading="lazy"></div>
+          <div class="card-content">
+            <span class="duration">120 min</span>
+            <h3>Sightseeing tour of Dubrovnik</h3>
+            <p style="color:var(--warm-gray);">Discover Dubrovnik from a unique perspective on a comfortable Tuk Tuk tour that blends history, nature, and breathtaking views. Starting with a scenic drive across the Franjo Tuđman Bridge, you’ll enjoy beautiful sights of the Adriatic and nearby islands. As we continue, enjoy the striking landscape of Mount Srđ, where panoramic views reveal the Old Town, Lokrum Island, and the sparkling coastline below. With fresh air, open views, and plenty of photo stops, this tour offers a perfect balance of sightseeing and comfort. A great choice for visitors who want memorable views without long walks.</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-image"><img src="DbkSunset.jpg" alt="Golden sunset" loading="lazy"></div>
+          <div class="card-content">
+            <span class="duration">120 min</span>
+            <h3>The Golden Hour by tuk tuk</h3>
+            <p style="color:var(--warm-gray);">Hop on a Tuk Tuk and explore Dubrovnik’s most beautiful viewpoints in a fun and relaxed way. This expertly timed tour captures the splendor of the Sun sailing beyond the horizon. Taking you across the Franjo Tuđman Bridge, offering stunning views of the Adriatic Sea and surrounding islands. As the Sun goes down, the ride continues up toward Mount Srđ, where a marvelous panoramic view awaits just as the sky lights up in sunset tones. This easy and comfortable experience is perfect for photographers, first-time visitors, and anyone looking to enjoy Dubrovnik’s iconic golden hour without the crowds.</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-image"><img src="GemCove.jpg" alt="Hidden cove" loading="lazy"></div>
+          <div class="card-content">
+            <span class="duration">120 min + 60 min</span>
+            <h3>Dubrovnik tale by tuk tuk</h3>
+            <p style="color:var(--warm-gray);">Tale of Dubrovnik is a must-do Tuk Tuk tour led by a knowledgeable local guide who brings the city’s views and history to life. Comfortable, authentic, and perfectly paced, this tour combines panoramic drives over the Franjo Tudman Bridge with stunning viewpoints from Mount Srd. The journey finishes in the Old Town, where centuries of history, legends, and local stories are revealed by someone who truly knows the city. With unforgettable views and insider knowledge, Tale of Dubrovnik is the perfect introduction to Dubrovnik.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ WHY CHOOSE US ============ -->
+    <section class="container fade-up">
+      <h2 class="text-center" style="text-align:center;">Why choose us</h2>
+      <div class="icon-grid">
+        <div class="icon-item"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20z"/><path d="M12 6v6l4 2"/></svg><p>Local Private Guide</p></div>
+        <div class="icon-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M5 22v-4a7 7 0 0114 0v4"/></svg><p>Eco-Conscious Fleet</p></div>
+        <div class="icon-item"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><circle cx="17" cy="7" r="4"/></svg><p>Intimate Small Groups</p></div>
+        <div class="icon-item"><svg viewBox="0 0 24 24"><path d="M14.5 4.5L18 8l-6 6-4-4 6-6z"/><path d="M8 12l-4 4 2 2 4-4"/><path d="M16 12l4 4-2 2-4-4"/></svg><p>Iconic Photo Locations</p></div>
+      </div>
+    </section>
+
+    <!-- ============ GALLERY ============ -->
+    <section id="gallery" class="container fade-up">
+      <h2 class="text-center" style="text-align:center;">Cinematic moments</h2>
+      <div class="gallery-grid">
+        <div class="gallery-item"><img src="dubrovnik.jpg" alt="Old Town" loading="lazy"></div>
+        <div class="gallery-item"><img src="coast.jpg" alt="Adriatic coastline" loading="lazy"></div>
+        <div class="gallery-item"><img src="lovrijenac.jpg" alt="Fort Lovrijenac" loading="lazy"></div>
+        <div class="gallery-item"><img src="srd.jpg" alt="Mount Srđ" loading="lazy"></div>
+        <div class="gallery-item"><img src="sunset.jpg" alt="Sunset" loading="lazy"></div>
+        <div class="gallery-item"><img src="stradun.jpg" alt="Stradun" loading="lazy"></div>
+      </div>
+    </section>
+
+    <!-- ============ INQUIRY FORM ============ -->
+    <section id="contact" class="container fade-up">
+      <h2 class="text-center" style="text-align:center;">Concierge inquiry</h2>
+      <div class="contact-form">
+        <form id="luxuryForm">
+          <div class="form-group"><input type="text" id="name" name="name" placeholder=" " required><label for="name">Full name</label></div>
+          <div class="form-group"><input type="email" id="email" name="email" placeholder=" " required><label for="email">Email address</label></div>
+          <div class="form-group">
+            <select id="tour" name="tour"><option value="" disabled selected hidden></option>
+              <option value="The Panoramic Signature">Sightseeing tour of Dubrovnik (120min)</option>
+              <option value="The Golden Sunset">The Golden Hour by tuk tuk (120 min)</option>
+              <option value="The Hidden Gems Discovery">Dubrovnik tale by tuk tuk (180 min)</option>
+            </select>
+            <label for="tour">Preferred tour (optional)</label>
+          </div>
+          <div class="form-group"><textarea id="message" name="message" rows="3" placeholder=" " required></textarea><label for="message">Your message</label></div>
+          <p>(Please mention if you want a private tour in a message)</p>
+          <button type="submit" class="form-btn" id="sendBtn">Send inquiry</button>
+          <div id="formStatus" class="form-status"></div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-logo"><img src="logo.png" alt="Dubrovnik Tuk Tuk Tours"></div>
+        <div class="footer-info">
+          <p style="margin-top:0.5rem;">Ragusatuktours@gmail.com</p>
+          <p>+385(0) 919351909</p>
+          <p>+385(0) 994418363</p>
+          <div style="margin-top:1rem;"><a href="#" aria-label="Instagram"><svg class="instagram-icon" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="1.2" fill="none"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.2" fill="none"/><circle cx="18" cy="6" r="1.2" fill="currentColor"/></svg></a></div>
+        </div>
+      </div>
+      <div class="copyright"><span>© Dubrovnik Tuk Tuk Tours — private luxury since 2026</span></div>
+    </div>
+  </footer>
+
+  <!-- JavaScript emailjs i observer -->
+  <script>
+    (function() {
+      "use strict";
+
+      const EMAILJS_PUBLIC_KEY = 's5eDAPgV5ektmJFSs';
+      const EMAILJS_SERVICE_ID = 'service_jiygl2b';
+      const EMAILJS_TEMPLATE_ID = 'template_7zpfiat';
+      emailjs.init(EMAILJS_PUBLIC_KEY);
+
+      const heroBg = document.getElementById('parallaxBg');
+      if (heroBg) {
+        window.addEventListener('scroll', function() {
+          const scrollY = window.scrollY;
+          requestAnimationFrame(() => {
+            heroBg.style.transform = `translateY(${scrollY * 0.25}px)`;
+          });
+        }, { passive: true });
+      }
+
+      const fadeElements = document.querySelectorAll('.fade-up');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) entry.target.classList.add('visible');
+        });
+      }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+      fadeElements.forEach(el => observer.observe(el));
+
+      const contactForm = document.getElementById('luxuryForm');
+      const sendBtn = document.getElementById('sendBtn');
+      const statusDiv = document.getElementById('formStatus');
+
+      contactForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const name = document.getElementById('name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const tour = document.getElementById('tour').value;
+        const message = document.getElementById('message').value.trim();
+
+        if (!name || !email || !message) {
+          statusDiv.textContent = 'Kindly complete all required fields: Full name, email and message.';
+          statusDiv.classList.add('show', 'error');
+          return;
+        }
+        if (!/^\S+@\S+\.\S+$/.test(email)) {
+          statusDiv.textContent = 'Please enter a valid email address.';
+          statusDiv.classList.add('show', 'error');
+          return;
+        }
+
+        const templateParams = { name, email, title: tour || 'Not specified', message };
+
+        sendBtn.disabled = true;
+        sendBtn.textContent = 'Sending...';
+        statusDiv.classList.remove('show', 'error');
+        statusDiv.textContent = '';
+
+        emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
+          .then(() => {
+            statusDiv.textContent = 'Inquiry sent. A member of our concierge team will respond within 2 hours.';
+            statusDiv.classList.add('show');
+            statusDiv.classList.remove('error');
+            contactForm.reset();
+          })
+          .catch((error) => {
+            statusDiv.textContent = 'An unexpected error occurred. Please try again or contact us directly.';
+            statusDiv.classList.add('show', 'error');
+            console.error('EmailJS error:', error);
+          })
+          .finally(() => {
+            sendBtn.disabled = false;
+            sendBtn.textContent = 'Send inquiry';
+          });
+      });
+    })();
+  </script>
+</body>
+</html>
